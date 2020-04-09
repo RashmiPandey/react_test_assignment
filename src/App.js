@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import Result from './Result';
 
 class App extends React.Component {
 
@@ -13,29 +14,46 @@ class App extends React.Component {
   }
   render() {
     return (
-
       <div>
-        <h1 className="headertekst">{this.state.showResults ? <Results message={this.state.message} /> : null}</h1>
-        <div hidden={this.state.showResults}>
-        <form >
-          <span className="formtext">Input a Number</span>
-          <input
-            type="text"
-            value={this.state.inputNumber}
-            onChange={event => this.setState({ inputNumber: event.target.value })}
-            placeholder="Enter a Number"
-            required
-          />
-          &nbsp;<button onClick={this.checkNumber}>Go!</button>
-      </form>
+        {
+          this.state.showResults &&
+          <div>
+            <div>
+              <Result message={this.state.message} />
+              <button onClick={this.backtoForm}>Go Back!</button>
+            </div>
+          </div>
+        }
+        {
+          !this.state.showResults &&
+          <form >
+            <span className="formtext">Input a Number</span>
+            <input
+              type="text"
+              value={this.state.inputNumber}
+              onChange={event => this.setState({ inputNumber: event.target.value })}
+              placeholder="Enter a Number"
+              required
+            />
+            &nbsp;<button onClick={this.checkNumber}>Go!</button>
+          </form>
+        }
+
       </div>
-      </div>
+      // </div>
     );
   }
 
+  backtoForm = () => {
+    this.setState({
+      showResults: !this.state.showResults
+    })
+  }
+  
   checkNumber = () => {
 
     const x = this.state.inputNumber;
+    this.setState({ showResults: false });
 
     switch (true) {
       // case (isNaN(x)):
@@ -58,15 +76,6 @@ class App extends React.Component {
         this.setState({ message: "No Match" });
         break;
     }
-  }
-}
-class Results extends React.Component {
-  render() {
-    return (
-      <div id="results">
-        {this.props.message}
-      </div>
-    );
   }
 }
 
